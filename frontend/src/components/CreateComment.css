@@ -1,0 +1,57 @@
+.create-comment-container{
+    /* background-color: LightGray; */
+    display: flex;
+    width:100%;
+    border-radius:20px ;
+
+}
+
+.create-comment-form {
+    height: auto;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(255,255,255,0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.create-comment-form textarea{
+    height: auto;
+    width: 95%;
+    border-radius: 10px;
+    margin-top: 10px;
+    border: 2px black solid;
+    
+}
+
+.submit-comment{
+    width: 15%;
+    height: 40px;
+    border-radius: 4px;
+    border: none;
+    background: #1c89ff;
+    color: white;
+    margin-left:10px;
+
+}
+
+.submit-comment:hover{
+    width: 15%;
+    height: 40px;
+    border-radius: 4px;
+    border: none;
+    background: #1366c0;
+    color: white;
+    margin-left:10px;
+    cursor:pointer
+    
+}
+
+
+@media (max-width: 600px) {
+    .create-comment-form{
+        padding-left: 30px;
+    }
+
+}
+

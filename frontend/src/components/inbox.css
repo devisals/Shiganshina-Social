@@ -1,0 +1,126 @@
+.inbox-outer{
+    height: 100%;
+    background-color: white;
+    color: black;
+}
+
+.inbox-outer h1{
+    text-align: center;
+    background-color: black;
+    color: white;
+    padding: 30px;
+
+}
+
+.inbox-comment,.inbox-like, .inbox-request,.inbox-post{
+    background-color: white;
+    color: black;
+    box-sizing:border-box;
+    margin-top:20px;
+    border-radius: 10px;
+    padding:20px;
+    display: flex;
+    flex-direction: column;
+    text-align: left !important;
+    border: 2px solid lightgray;
+    padding: 20px;
+    width: 500px;
+    margin: 20px auto;
+    border-radius: 15px;
+
+}
+
+.inbox-comment:hover,.inbox-like:hover,.inbox-request:hover,.inbox-post:hover{
+    border: 2px solid lightgray;
+    background-color:lightgray ;
+    padding: 20px;
+    width: 500px;
+    margin: 20px auto;
+}
+
+.request-summary{
+    font-weight: bold;
+    font-size: 18px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+}
+
+.inbox-container .info-header{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.inbox-container {
+    overflow: auto;
+    max-height: 50vh;
+}
+
+.inbox-button-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+.inbox-button{
+    border: 2px black solid;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-right: 10px;
+    padding: 8px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+
+.inbox-button:hover{
+    background-color: #c2bfbf;
+}
+
+.inbox-request-button{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 10px;
+}
+
+.inbox-request button{
+    width: 45%;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.inbox-request button:hover{
+    background-color: #c2bfbf;
+    width: 45%;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.inbox-post button{
+    width: 45%;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.inbox-post .post-title{
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.inbox-post .post-author{
+    font-weight:bold;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.inbox-post button:hover{
+    background-color: #c2bfbf;
+    width: 45%;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}

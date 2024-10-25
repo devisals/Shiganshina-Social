@@ -1,0 +1,2629 @@
+openapi: 3.0.3
+info:
+  title: API for Team attack
+  version: 0.0.0
+  description: Swagger API docs for Team attack (Shiganshina Social)
+paths:
+  /api/auth:
+    get:
+      operationId: auth_retrieve
+      description: |-
+        METHOD: GET
+        Basically login. Given the basic auth, returns the user object
+
+        usage:
+
+        curl -X GET -u "admin:1234" http://localhost:8000/api/auth/
+      tags:
+      - auth
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: auth_create
+      description: |-
+        METHOD: POST
+        Adds a user as inactive (is_active=False) so the site admin can approve them
+
+        See: https://eclass.srv.ualberta.ca/mod/forum/discuss.php?d=2450399
+        https://forum.djangoproject.com/t/django-registrations-controlled-by-admin/27931
+
+        usage:
+        curl -X POST -u "admin:1234" -H "Content-Type: application/json" -d '{"displayName": "Test User 1", "password": "testpassword1", "github": "https://github.com/joshuanianji", "host": "http://localhost:8000/api/"}' http://localhost:8000/api/auth/
+      tags:
+      - auth
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/authors:
+    get:
+      operationId: authors_list
+      description: |-
+        METHOD: GET
+        Returns a list of authors on the local system
+        URL: authors/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+    post:
+      operationId: authors_create
+      description: API endpoint that allows authors (users who are non-admins) to
+        be viewed or edited.
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/authors/{author_id}/followers:
+    get:
+      operationId: authors_followers_list
+      description: |-
+        method: GET
+        Returns a list of followers for a single author
+        URL: /authors/{AUTHOR_ID}/followers/
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Follower'
+          description: ''
+    post:
+      operationId: authors_followers_create
+      description: API endpoint that allows followers to be added/edited/removed
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Follower'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Follower'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Follower'
+        required: true
+      security:
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Follower'
+          description: ''
+  /api/authors/{author_id}/followers{id}:
+    get:
+      operationId: authors_followers_retrieve_2
+      description: API endpoint that allows followers to be added/edited/removed
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this follower.
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Follower'
+          description: ''
+    put:
+      operationId: authors_followers_update_2
+      description: |-
+        method: PUT
+        Creates a new follower FOREIGN_AUTHOR_ID for author AUTHOR_ID
+        URL: /authors/{AUTHOR_ID}/followers/{FOREIGN_AUTHOR_ID}
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this follower.
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Follower'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Follower'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Follower'
+        required: true
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Follower'
+          description: ''
+    patch:
+      operationId: authors_followers_partial_update
+      description: API endpoint that allows followers to be added/edited/removed
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this follower.
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedFollower'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedFollower'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedFollower'
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Follower'
+          description: ''
+    delete:
+      operationId: authors_followers_destroy_2
+      description: |-
+        method: DELETE
+        Removes a follower FOREIGN_AUTHOR_ID for author AUTHOR_ID
+        URL: /authors/{AUTHOR_ID}/followers/{FOREIGN_AUTHOR_ID}
+
+        This only deletes from the local Follower table.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this follower.
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/authors/{author_id}/followers/{foreign_author_id}:
+    get:
+      operationId: authors_followers_retrieve
+      description: |-
+        method: GET
+        Returns a single follower
+        URL: /authors/{AUTHOR_ID}/followers/{FOREIGN_AUTHOR_ID}
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: foreign_author_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Follower'
+          description: ''
+    put:
+      operationId: authors_followers_update
+      description: |-
+        method: PUT
+        Creates a new follower FOREIGN_AUTHOR_ID for author AUTHOR_ID
+        URL: /authors/{AUTHOR_ID}/followers/{FOREIGN_AUTHOR_ID}
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: foreign_author_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Follower'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Follower'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Follower'
+        required: true
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Follower'
+          description: ''
+    delete:
+      operationId: authors_followers_destroy
+      description: |-
+        method: DELETE
+        Removes a follower FOREIGN_AUTHOR_ID for author AUTHOR_ID
+        URL: /authors/{AUTHOR_ID}/followers/{FOREIGN_AUTHOR_ID}
+
+        This only deletes from the local Follower table.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: foreign_author_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/authors/{author_id}/inbox:
+    get:
+      operationId: authors_inbox_list
+      description: |-
+        METHOD: GET
+        Returns the inbox for a specific user
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInboxList'
+          description: ''
+    post:
+      operationId: authors_inbox_create
+      description: |-
+        method: POST
+        Creates a new inbox object to the author's inbox
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Inbox'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Inbox'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Inbox'
+      security:
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inbox'
+          description: ''
+  /api/authors/{author_id}/inbox{id}:
+    get:
+      operationId: authors_inbox_retrieve
+      description: API endpoint that allows posts to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inbox.
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inbox'
+          description: ''
+    put:
+      operationId: authors_inbox_update
+      description: API endpoint that allows posts to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inbox.
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Inbox'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Inbox'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Inbox'
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inbox'
+          description: ''
+    patch:
+      operationId: authors_inbox_partial_update
+      description: API endpoint that allows posts to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inbox.
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedInbox'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedInbox'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedInbox'
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inbox'
+          description: ''
+    delete:
+      operationId: authors_inbox_destroy
+      description: API endpoint that allows posts to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this inbox.
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/authors/{author_id}/inboxdelete:
+    delete:
+      operationId: authors_inboxdelete_destroy
+      description: Deletes all inboxes for a user
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/authors/{author_id}/liked:
+    get:
+      operationId: authors_liked_list
+      description: |-
+        API endpoint that allows all the likes of an author to be viewed.
+        URL: authors/{author_id}/liked/
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Like'
+          description: ''
+  /api/authors/{author_id}/posts:
+    get:
+      operationId: authors_posts_list
+      description: |-
+        METHOD: GET
+        Returns a list of posts by a single author
+        URL: ://service/authors/{AUTHOR_ID}/posts
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPostList'
+          description: ''
+    post:
+      operationId: authors_posts_create
+      description: |-
+        METHOD: POST
+        Creates a new post
+        URL: ://service/authors/{AUTHOR_ID}/posts
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Post'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Post'
+        required: true
+      security:
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: ''
+  /api/authors/{author_id}/posts/{id}:
+    get:
+      operationId: authors_posts_retrieve
+      description: |-
+        METHOD: GET
+        Returns a single post
+        URL: ://service/authors/{AUTHOR_ID}/posts/{POST_ID}
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: ''
+    put:
+      operationId: authors_posts_update
+      description: |-
+        method: PUT
+        Updates a post
+        URL: ://service/authors/{AUTHOR_ID}/posts/{POST_ID}
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Post'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Post'
+        required: true
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: ''
+    delete:
+      operationId: authors_posts_destroy
+      description: API endpoint that allows posts to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/authors/{author_id}/posts/{post_id}/comments:
+    get:
+      operationId: authors_posts_comments_list
+      description: |-
+        METHOD: GET
+        Returns a list of comments for a single post
+        Defaults to the first 5 comments sorted by published date, newest first
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: path
+        name: post_id
+        schema:
+          type: string
+          description: The post being commented on
+        required: true
+      - name: size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCommentList'
+          description: ''
+    post:
+      operationId: authors_posts_comments_create
+      description: |-
+        METHOD: POST
+        Creates a new comment for a post
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+          description: The post being commented on
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Comment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Comment'
+        required: true
+      security:
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
+  /api/authors/{author_id}/posts/{post_id}/comments/{comment_id}/likes:
+    get:
+      operationId: authors_posts_comments_likes_list
+      description: |-
+        METHOD: GET
+        URL: ://service/authors/{AUTHOR_ID}/posts/{POST_ID}/likes
+             ://service/authors/{AUTHOR_ID}/posts/{POST_ID}/comments/{COMMENT_ID}/likes
+        Returns a list of likes from other authors on AUTHOR_ID's post (POST_ID) or comment
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: comment_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Like'
+          description: ''
+    post:
+      operationId: authors_posts_comments_likes_create
+      description: API endpoint that allows likes to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: comment_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Like'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Like'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Like'
+        required: true
+      security:
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+          description: ''
+  /api/authors/{author_id}/posts/{post_id}/comments/{comment_id}/likes/{id}:
+    get:
+      operationId: authors_posts_comments_likes_retrieve
+      description: API endpoint that allows likes to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: comment_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this like.
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+          description: ''
+    put:
+      operationId: authors_posts_comments_likes_update
+      description: API endpoint that allows likes to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: comment_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this like.
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Like'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Like'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Like'
+        required: true
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+          description: ''
+    patch:
+      operationId: authors_posts_comments_likes_partial_update
+      description: API endpoint that allows likes to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: comment_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this like.
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedLike'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedLike'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedLike'
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+          description: ''
+    delete:
+      operationId: authors_posts_comments_likes_destroy
+      description: API endpoint that allows likes to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: comment_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this like.
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/authors/{author_id}/posts/{post_id}/comments/{id}:
+    get:
+      operationId: authors_posts_comments_retrieve
+      description: |-
+        METHOD: GET
+        Returns a single comment
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: the ID of the user
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+          description: The post being commented on
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
+    put:
+      operationId: authors_posts_comments_update
+      description: API endpoint that allows comments to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: the ID of the user
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+          description: The post being commented on
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Comment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Comment'
+        required: true
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
+    patch:
+      operationId: authors_posts_comments_partial_update
+      description: API endpoint that allows comments to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: the ID of the user
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+          description: The post being commented on
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedComment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedComment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedComment'
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
+    delete:
+      operationId: authors_posts_comments_destroy
+      description: API endpoint that allows comments to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: the ID of the user
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+          description: The post being commented on
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/authors/{author_id}/posts/{post_id}/image:
+    get:
+      operationId: authors_posts_image_retrieve
+      description: |-
+        METHOD: GET
+        Returns the image of a single post
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: ''
+  /api/authors/{author_id}/posts/{post_id}/likes:
+    get:
+      operationId: authors_posts_likes_list
+      description: |-
+        METHOD: GET
+        URL: ://service/authors/{AUTHOR_ID}/posts/{POST_ID}/likes
+             ://service/authors/{AUTHOR_ID}/posts/{POST_ID}/comments/{COMMENT_ID}/likes
+        Returns a list of likes from other authors on AUTHOR_ID's post (POST_ID) or comment
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Like'
+          description: ''
+    post:
+      operationId: authors_posts_likes_create
+      description: API endpoint that allows likes to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Like'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Like'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Like'
+        required: true
+      security:
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+          description: ''
+  /api/authors/{author_id}/posts/{post_id}/likes/{id}:
+    get:
+      operationId: authors_posts_likes_retrieve
+      description: API endpoint that allows likes to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this like.
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+          description: ''
+    put:
+      operationId: authors_posts_likes_update
+      description: API endpoint that allows likes to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this like.
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Like'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Like'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Like'
+        required: true
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+          description: ''
+    patch:
+      operationId: authors_posts_likes_partial_update
+      description: API endpoint that allows likes to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this like.
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedLike'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedLike'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedLike'
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+          description: ''
+    delete:
+      operationId: authors_posts_likes_destroy
+      description: API endpoint that allows likes to be viewed or edited.
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this like.
+        required: true
+      - in: path
+        name: post_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/authors/{author_id}/posts/following:
+    get:
+      operationId: authors_posts_following_retrieve
+      description: |-
+        METHOD: GET
+        Returns a list of posts from authors that the user is following
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: ''
+  /api/authors/{author_id}/posts/public:
+    get:
+      operationId: authors_posts_public_retrieve
+      description: |-
+        METHOD: GET
+        Returns a list of public posts
+      parameters:
+      - in: path
+        name: author_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: ''
+  /api/authors/{id}:
+    get:
+      operationId: authors_retrieve
+      description: |-
+        METHOD: GET
+        Returns a single author
+        URL: authors/{author_id}/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: the ID of the user
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: authors_update
+      description: |-
+        METHOD: PUT
+        Updates a single author
+        URL: authors/{author_id}/
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: the ID of the user
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: authors_partial_update
+      description: API endpoint that allows authors (users who are non-admins) to
+        be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: the ID of the user
+        required: true
+      tags:
+      - authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    delete:
+      operationId: authors_destroy
+      description: API endpoint that allows authors (users who are non-admins) to
+        be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: the ID of the user
+        required: true
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/authors/all:
+    get:
+      operationId: authors_all_list
+      description: |-
+        METHOD: GET
+        Returns a list of authors on the local system
+        URL: authors/
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - authors
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+  /api/schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/update_github:
+    put:
+      operationId: update_github_update
+      description: |-
+        METHOD: PUT
+        Updates the github field of a user
+      tags:
+      - update_github
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/users:
+    get:
+      operationId: users_list
+      description: API endpoint that allows users to be viewed (no user story for
+        editing)
+      tags:
+      - users
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          description: ''
+    post:
+      operationId: users_create
+      description: API endpoint that allows users to be viewed (no user story for
+        editing)
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/users/{id}:
+    get:
+      operationId: users_retrieve
+      description: API endpoint that allows users to be viewed (no user story for
+        editing)
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: the ID of the user
+        required: true
+      tags:
+      - users
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: users_update
+      description: API endpoint that allows users to be viewed (no user story for
+        editing)
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: the ID of the user
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: users_partial_update
+      description: API endpoint that allows users to be viewed (no user story for
+        editing)
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: the ID of the user
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    delete:
+      operationId: users_destroy
+      description: API endpoint that allows users to be viewed (no user story for
+        editing)
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          description: the ID of the user
+        required: true
+      tags:
+      - users
+      security:
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Comment:
+      type: object
+      description: |-
+        ### COMMENT SERIALIZER
+        Serializes the author of the comment.
+      properties:
+        type:
+          type: string
+          readOnly: true
+        id:
+          type: string
+          readOnly: true
+          description: the ID of the user
+        author:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        comment:
+          type: string
+          description: The content of the comment
+        published:
+          type: string
+          format: date-time
+          readOnly: true
+        contentType:
+          allOf:
+          - $ref: '#/components/schemas/ContentTypeEnum'
+          description: |-
+            Content type of the comment
+
+            * `text/plain` - Plain Text
+            * `text/markdown` - Markdown
+            * `application/base64` - Base64 Application
+            * `image/png;base64` - Base64 PNG Image
+            * `image/jpeg;base64` - Base64 JPEG Image
+            * `image/gif;base64` - Base64 GIF Image
+      required:
+      - author
+      - comment
+      - id
+      - published
+      - type
+    ContentTypeEnum:
+      enum:
+      - text/plain
+      - text/markdown
+      - application/base64
+      - image/png;base64
+      - image/jpeg;base64
+      - image/gif;base64
+      type: string
+      description: |-
+        * `text/plain` - Plain Text
+        * `text/markdown` - Markdown
+        * `application/base64` - Base64 Application
+        * `image/png;base64` - Base64 PNG Image
+        * `image/jpeg;base64` - Base64 JPEG Image
+        * `image/gif;base64` - Base64 GIF Image
+    FollowRequest:
+      type: object
+      description: |-
+        ### FOLLOW REQUEST SERIALIZER
+        Serializes a follow request
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        actor:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        object:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+      required:
+      - actor
+      - id
+      - object
+    Follower:
+      type: object
+      description: |-
+        ### FOLLOWER SERIALIZER
+
+        Serializes a follower info
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        actor:
+          type: string
+          description: the ID of the user
+        object:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+      required:
+      - actor
+      - id
+      - object
+    Inbox:
+      type: object
+      description: |-
+        ### INBOX SERIALIZER
+        Serializes the inbox for a user
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        author:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          description: |-
+            The type of the notification
+
+            * `POST` - post
+            * `LIKE` - like
+            * `COMMENT` - comment
+            * `FOLLOW` - follow
+        post:
+          allOf:
+          - $ref: '#/components/schemas/InboxPost'
+          readOnly: true
+        like:
+          allOf:
+          - $ref: '#/components/schemas/Like'
+          readOnly: true
+        comment:
+          allOf:
+          - $ref: '#/components/schemas/InboxComment'
+          readOnly: true
+        follow:
+          allOf:
+          - $ref: '#/components/schemas/FollowRequest'
+          readOnly: true
+      required:
+      - author
+      - comment
+      - follow
+      - id
+      - like
+      - post
+    InboxComment:
+      type: object
+      description: |-
+        ### COMMENT SERIALIZER
+
+        Serializes a comment for an inbox (no post relation)
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        commentUrl:
+          type: string
+          format: uri
+          readOnly: true
+          description: the URL ID of the comment
+        author:
+          type: string
+          format: uri
+          description: The user who made the comment
+          maxLength: 200
+      required:
+      - author
+      - commentUrl
+      - id
+    InboxPost:
+      type: object
+      description: |-
+        ### POST SERIALIZER
+        Serializes a post for an inbox
+      properties:
+        post_id:
+          type: string
+          format: uri
+          readOnly: true
+          description: the ID of the post
+      required:
+      - post_id
+    Like:
+      type: object
+      description: |-
+        ### LIKE SERIALIZER
+        Serializes the author of the like.
+
+        DB Fields:
+            - summary (str): A short description of the like (e.g. user likes this post)
+            - type (str): The type of the activity (e.g. Like, Comment, etc.)
+            - object (str): The URL of the object being liked
+            - published (datetime): The date and time the like was made
+
+        Sample JSON:
+        {
+            "summary": "Lara Croft Likes your post",
+            "type": "Like",
+            "author":{
+                "type":"author",
+                "id":"http://localhost:8000/9de17f29c12e8f97bcbbd34cc908f1baba40658e",
+                "host":"http://127.0.0.1:5454/",
+                "displayName":"Lara Croft",
+                "url":"http://127.0.0.1:5454/authors/9de17f29c12e8f97bcbbd34cc908f1baba40658e",
+                "github":"http://github.com/laracroft",
+                "profileImage": "https://i.imgur.com/k7XVwpB.jpeg"
+            },
+            "object":"http://127.0.0.1:5454/authors/9de17f29c12e8f97bcbbd34cc908f1baba40658e/posts/764efa883dda1e11db47671c4a3bbd9e"
+        }
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        author:
+          type: string
+          format: uri
+          description: The user URL ID who liked the post
+          maxLength: 200
+        object:
+          type: string
+          format: uri
+          description: The URL ID of the object being liked
+          maxLength: 200
+        published:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - author
+      - id
+      - object
+      - published
+    PaginatedCommentList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+    PaginatedInboxList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Inbox'
+    PaginatedPostList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Post'
+    PaginatedUserList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    PatchedComment:
+      type: object
+      description: |-
+        ### COMMENT SERIALIZER
+        Serializes the author of the comment.
+      properties:
+        type:
+          type: string
+          readOnly: true
+        id:
+          type: string
+          readOnly: true
+          description: the ID of the user
+        author:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        comment:
+          type: string
+          description: The content of the comment
+        published:
+          type: string
+          format: date-time
+          readOnly: true
+        contentType:
+          allOf:
+          - $ref: '#/components/schemas/ContentTypeEnum'
+          description: |-
+            Content type of the comment
+
+            * `text/plain` - Plain Text
+            * `text/markdown` - Markdown
+            * `application/base64` - Base64 Application
+            * `image/png;base64` - Base64 PNG Image
+            * `image/jpeg;base64` - Base64 JPEG Image
+            * `image/gif;base64` - Base64 GIF Image
+    PatchedFollower:
+      type: object
+      description: |-
+        ### FOLLOWER SERIALIZER
+
+        Serializes a follower info
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        actor:
+          type: string
+          description: the ID of the user
+        object:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+    PatchedInbox:
+      type: object
+      description: |-
+        ### INBOX SERIALIZER
+        Serializes the inbox for a user
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        author:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          description: |-
+            The type of the notification
+
+            * `POST` - post
+            * `LIKE` - like
+            * `COMMENT` - comment
+            * `FOLLOW` - follow
+        post:
+          allOf:
+          - $ref: '#/components/schemas/InboxPost'
+          readOnly: true
+        like:
+          allOf:
+          - $ref: '#/components/schemas/Like'
+          readOnly: true
+        comment:
+          allOf:
+          - $ref: '#/components/schemas/InboxComment'
+          readOnly: true
+        follow:
+          allOf:
+          - $ref: '#/components/schemas/FollowRequest'
+          readOnly: true
+    PatchedLike:
+      type: object
+      description: |-
+        ### LIKE SERIALIZER
+        Serializes the author of the like.
+
+        DB Fields:
+            - summary (str): A short description of the like (e.g. user likes this post)
+            - type (str): The type of the activity (e.g. Like, Comment, etc.)
+            - object (str): The URL of the object being liked
+            - published (datetime): The date and time the like was made
+
+        Sample JSON:
+        {
+            "summary": "Lara Croft Likes your post",
+            "type": "Like",
+            "author":{
+                "type":"author",
+                "id":"http://localhost:8000/9de17f29c12e8f97bcbbd34cc908f1baba40658e",
+                "host":"http://127.0.0.1:5454/",
+                "displayName":"Lara Croft",
+                "url":"http://127.0.0.1:5454/authors/9de17f29c12e8f97bcbbd34cc908f1baba40658e",
+                "github":"http://github.com/laracroft",
+                "profileImage": "https://i.imgur.com/k7XVwpB.jpeg"
+            },
+            "object":"http://127.0.0.1:5454/authors/9de17f29c12e8f97bcbbd34cc908f1baba40658e/posts/764efa883dda1e11db47671c4a3bbd9e"
+        }
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        author:
+          type: string
+          format: uri
+          description: The user URL ID who liked the post
+          maxLength: 200
+        object:
+          type: string
+          format: uri
+          description: The URL ID of the object being liked
+          maxLength: 200
+        published:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedUser:
+      type: object
+      description: |-
+        ### UserSerializer class
+        Serializes the User model.
+      properties:
+        id:
+          type: string
+          readOnly: true
+          description: the ID of the user
+        displayName:
+          type: string
+          description: the author's display name
+          maxLength: 250
+        github:
+          type: string
+          format: uri
+          maxLength: 250
+        url:
+          type: string
+          readOnly: true
+        host:
+          type: string
+          format: uri
+          description: the home host of the author
+          maxLength: 250
+        profileImage:
+          type: string
+          format: uri
+          nullable: true
+          description: url to the author's profile image
+          maxLength: 250
+    Post:
+      type: object
+      description: |-
+        ### POST SERIALIZER
+        Serializes the author of the post and provides the URL to the comments on the post.
+        Attributes:
+            - author (UserSerializer): The author of the post
+            - comments (str): The URL of the comments on the post
+        Methods:
+            - get_comments: Returns the URL to the comments on the post
+      properties:
+        type:
+          type: string
+          readOnly: true
+        id:
+          type: string
+          readOnly: true
+          description: the ID of the user
+        author:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        title:
+          type: string
+          maxLength: 250
+        description:
+          type: string
+          maxLength: 500
+        content:
+          type: string
+        contentType:
+          allOf:
+          - $ref: '#/components/schemas/ContentTypeEnum'
+          description: |-
+            Content type of the post
+
+            * `text/plain` - Plain Text
+            * `text/markdown` - Markdown
+            * `application/base64` - Base64 Application
+            * `image/png;base64` - Base64 PNG Image
+            * `image/jpeg;base64` - Base64 JPEG Image
+            * `image/gif;base64` - Base64 GIF Image
+        published:
+          type: string
+          format: date-time
+          readOnly: true
+        visibility:
+          allOf:
+          - $ref: '#/components/schemas/VisibilityEnum'
+          description: |-
+            Visibility of the post
+
+            * `PUBLIC` - Public
+            * `FRIENDS` - Friends
+            * `UNLISTED` - Unlisted
+        comments:
+          type: string
+          readOnly: true
+        source:
+          type: string
+          format: uri
+          description: The original source of the post
+          maxLength: 250
+        origin:
+          type: string
+          format: uri
+          description: The origin of the post
+          maxLength: 250
+        count:
+          type: integer
+          description: The number of comments on the post
+        url:
+          type: string
+          readOnly: true
+      required:
+      - author
+      - comments
+      - content
+      - description
+      - id
+      - origin
+      - published
+      - source
+      - title
+      - type
+      - url
+    TypeEnum:
+      enum:
+      - POST
+      - LIKE
+      - COMMENT
+      - FOLLOW
+      type: string
+      description: |-
+        * `POST` - post
+        * `LIKE` - like
+        * `COMMENT` - comment
+        * `FOLLOW` - follow
+    User:
+      type: object
+      description: |-
+        ### UserSerializer class
+        Serializes the User model.
+      properties:
+        id:
+          type: string
+          readOnly: true
+          description: the ID of the user
+        displayName:
+          type: string
+          description: the author's display name
+          maxLength: 250
+        github:
+          type: string
+          format: uri
+          maxLength: 250
+        url:
+          type: string
+          readOnly: true
+        host:
+          type: string
+          format: uri
+          description: the home host of the author
+          maxLength: 250
+        profileImage:
+          type: string
+          format: uri
+          nullable: true
+          description: url to the author's profile image
+          maxLength: 250
+      required:
+      - displayName
+      - github
+      - host
+      - id
+      - url
+    VisibilityEnum:
+      enum:
+      - PUBLIC
+      - FRIENDS
+      - UNLISTED
+      type: string
+      description: |-
+        * `PUBLIC` - Public
+        * `FRIENDS` - Friends
+        * `UNLISTED` - Unlisted
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic

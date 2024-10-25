@@ -1,0 +1,210 @@
+.user-outer-container{
+    overflow: scroll;
+    height: 100%;
+}
+
+.header-container {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.tabs-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-bottom: 30px;
+  background-color: #26292e;
+  padding: 10px;
+  border-radius: 0 0 30px 30px;
+}
+
+.tabs-container button{
+  border: 2px black solid;
+  font-size: 20px;
+  border-radius: 5px;
+  width: 50%;
+  padding: 30px;
+  margin-top: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+  background-color: #26292e;
+  color: white;
+  border: none;
+  border-right: 5px black solid;
+  font-weight: bold;
+}
+
+
+.tabs-container button:hover{
+  background-color: #8b8a8a;
+
+}
+
+
+
+@media (prefers-color-scheme: dark) {
+    .user-outer-container{
+        background-color: black;
+        color: white;
+    }
+    .home-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        background-color: black;
+        height: fit-content;
+        color: white;
+
+    }
+    
+}
+
+@media (prefers-color-scheme: light) {
+    .user-outer-container{
+        background-color: white;
+        color: black;
+    }
+    .home-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        background-color: white;
+        height: fit-content;
+        color: black;
+    }
+    
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.sidebar-container{
+    min-height: 100vh;
+    background-color: var(--dark-gray);
+    float:left;
+    width: 300px;
+}
+
+
+.create-post-outer{
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99; /* Ensure it appears above other elements */
+    background-color: rgba(0, 0, 0, 0.5); /* Dark semi-transparent background */
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    position: fixed; /* Position it anywhere on the page */
+    /* Fill the entire screen */
+    width: 100vw;
+    height: 100vh;
+}
+
+
+@media only screen and (max-width: 850px) {
+    .sidebar-container{
+        width: 15%;
+    }
+
+}
+
+
+
+
+/* Basic Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: Arial, sans-serif; /* Choose a font you like */
+  }
+  
+  .profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    width: 100%;
+    margin-bottom: 30px;
+
+  }  
+  .profile-header {
+    display: flex;
+    align-items: center; /* Adjust alignment */
+    width: 100%;
+    justify-content: space-between; /* Adjusts for smaller screens */
+    /* margin-bottom: 20px; */
+    max-width: 800px;
+    padding:40px;
+    background-color:#26292e;
+    border-radius: 0 0 80px 80px;
+  }
+  
+  .profile-image-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile-image-section img {
+    width: 100px; /* Adjust based on your preference */
+    height: 100px; /* Adjust to match width for a circle */
+    border-radius: 50%; /* Creates the rounded effect */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    margin-bottom: 10px; /* Space between the image and the username */
+  }
+  
+  .profile-info, .follow-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    font-weight: bold;
+  }
+
+  .follower-count{
+    margin-top: 10px;
+    font-weight: bold;
+  }
+
+  .follow-container{
+    margin-right: 20px;
+  }
+  
+  .follow-container button {
+    padding: 10px 20px; /* Adjusts the button size */
+    cursor: pointer;
+    background-color: #007bff; /* Example color */
+    color: white;
+    border: none;
+    border-radius: 5px; /* Slight rounding of button corners */
+  }
+  
+  @media (max-width: 768px) {
+    .profile-header {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .profile-info, .follow-container {
+        width: 100%; /* Ensures full width on smaller screens */
+        align-items: center; /* Center aligns the button and link on small screens */
+      }
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .main-content {
+      align-items: center;
+      justify-content: center;
+    }
+    
+  
+}

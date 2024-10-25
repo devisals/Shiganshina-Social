@@ -1,0 +1,19 @@
+
+:root {
+    /* Light Mode Colors */
+    --light-background: #ffffff; /* White background */
+    --light-text: #14171a; /* Almost black text */
+    --light-primary: #1da1f2; /* Twitter's brand blue for links and buttons */
+    --light-secondary: #aab8c2; /* Light gray for secondary text or icons */
+    --light-divider: #b6bbbe; /* Very light gray for dividers and borders */
+
+    /* Dark Mode Colors */
+    --dark-background: #15202b; /* Dark blue background */
+    --dark-text: #ffffff; /* White text */
+    --dark-primary: #1da1f2; /* Twitter's brand blue remains the same */
+    --dark-secondary: #8899a6; /* Darker gray for secondary text or icons */
+    --dark-divider: #2f3336; /* Dark gray for dividers and borders */
+
+    --light-primary-hover: #1991eb; /* Slightly darker blue for hover state in light mode */
+    --dark-primary-hover: #1991eb; /* Slightly darker blue for hover state in dark mode */
+}

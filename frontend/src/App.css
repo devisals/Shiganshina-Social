@@ -1,0 +1,71 @@
+ body {
+    margin: 0;
+    padding: 0;
+    height:100vh;
+    font: 16px/1.5 'Roboto', sans-serif;
+  }
+
+  #root{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* .profile-container{
+  background-color: green;
+  display: flex;
+  width: 300%
+}
+
+.profile-header{
+  width: 300%;
+} */
+
+
+.pagination-buttons{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.pagination-buttons button{
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+  margin-right: 10px;
+  padding: 8px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.pagination-buttons button:hover {
+  background-color: #c2bfbf;
+  border: none;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}

@@ -1,0 +1,110 @@
+.create-post-container {
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+    background-color: var(--light-background);
+    color: var(--light-text);
+    position: relative;
+    width: 30%;
+    height: 60%;
+    border: 5px solid white;
+    border-radius: 20px;
+  }
+
+  /* media query for create post container */
+  @media (max-width: 900px) {
+    .create-post-container {
+      width: 70vw;
+      height: 70vh;
+    }
+  }
+  
+  .create-post-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+    justify-content: center;
+  }
+  
+  .input-title, .input-description, .input-text, .input-file {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid var(--light-divider);
+    border-radius: 5px;
+    background-color: var(--light-background);
+    color: var(--light-text);
+  }
+  
+  .input-text {
+    height: 100px;
+    resize: none;
+  }
+  
+  .preview-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+    justify-content: center;
+  }
+  
+  .preview-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  
+  .submit-post {
+    padding: 10px;
+    background-color: var(--light-primary);
+    color: var(--light-background);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+  }
+  
+  .submit-post:hover {
+    background-color: var(--light-primary-hover);
+  }
+
+
+  .close-button{
+    padding: 10px;
+    background-color: #b5b6b7;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color .3s ease;
+    margin-bottom: 10px;
+  }
+
+  .close-button:hover {
+    background-color: #868686;
+  }
+
+  .visibility-dropdown label {
+    margin-right: 5px;
+  }
+
+  .visibility-dropdown{
+    margin-bottom: 10px;
+  }
+
+  .markdown-check input{
+    margin-right: 5px;
+  }
+
+  .markdown-check{
+    margin-bottom: 10px;
+  }
+
+  .post-type-info{
+    margin-bottom: 10px;
+  }
+
+  
+  

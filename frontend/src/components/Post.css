@@ -1,0 +1,265 @@
+@import '../variables.css';
+
+.date-container {
+    color: black;
+}
+
+.edit-container .create-post-container{
+    display: flex;
+    width: 100%;
+}
+
+.markdown-content img{
+    height: auto;
+    max-width: 100%;
+}
+
+
+
+@media (prefers-color-scheme: dark) {
+    .post-container {
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+        width: 100%;
+        max-width: 600px;
+        padding: 20px;
+        background-color: var(--light-background);
+        border-width: 1px;
+        border-style: solid; /* This line is added to ensure the border is displayed */
+        border-color: var(--light-divider);
+        border-radius: 10px;
+      }
+
+
+    
+    .post-text{
+        color:black;
+        max-height: 400px;
+        overflow: auto;
+    }
+
+    .post-images img{
+        height: auto;
+        max-width: 100%;
+    }
+
+      
+    .post-title{
+        color: var(--light-text);
+        font-size: 20px;
+    }
+    
+    .title-container{
+        align-items: center;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--light-divider);
+    }
+    
+    .description-container{
+        margin-top: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--light-divider);
+        color: var(--light-text);
+    }
+    .user-info {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 10px;
+      color:black;
+    }
+    
+    .user-name{
+        color: var(black);
+        font-weight: bold;
+    }
+    
+    .email-container {
+        margin-left: 10px;
+    }   
+    
+    .user-email{
+        color : var(--light-primary);
+    }
+    
+    .pfp-container {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 10px;
+    }
+
+    .pfp-container img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+    
+    .post-content{
+        display:flex;
+        flex-direction: column;
+        
+    }
+
+    .post-buttons{
+        display: flex;
+        flex-direction: row;
+        margin-top: 15px;
+    }
+
+    .post-buttons button:hover{
+        background-color: #c2bfbf;
+    }
+    
+    .post-interactions , .edit-post{
+      display: flex;
+      flex-direction: row;
+      margin: auto;
+    }
+    
+    .post-interactions button , .edit-post button {
+        margin: 0 2px;
+        padding: 5px 10px;
+        border-radius: 20px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+}
+
+
+@media (prefers-color-scheme: light) {
+    .post-container {
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+        width: 100%;
+        max-width: 600px;
+        padding: 20px;
+        background-color: var(--light-background);
+        border-width: 1px;
+        border-style: solid; /* This line is added to ensure the border is displayed */
+        border-color: var(--light-divider);
+        background-color: rgb(240, 237, 237);
+        border-radius: 10px;
+        color:black;
+      }
+    
+    .post-text{
+        color:black;
+        max-height: 400px;
+        overflow: auto;
+    }
+
+    .post-title{
+        color: var(black);
+        font-size: 20px;
+    }
+    .post-description{
+        color:black;
+    }
+
+    .post-images img{
+        height: auto;
+        max-width: 100%;
+    }
+
+    
+    .title-container{
+        align-items: center;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--light-divider);
+    }
+    
+    .description-container{
+        margin-top: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--light-divider);
+        color: var(--light-text);
+    }
+    .user-info {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .user-name{
+        color: var(--light-text);
+        font-weight: bold;
+    }
+    
+    .email-container {
+        margin-left: 10px;
+    }   
+    
+    .user-email{
+        color : var(--light-primary);
+    }
+    
+    .pfp-container {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 10px;
+    }
+
+    .pfp-container img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+    
+    .post-content{
+        display:flex;
+        flex-direction: column;
+        
+    }
+    
+    .post-interactions {
+      display: flex;
+      flex-direction: row;
+      margin: auto;
+    }
+    
+    .post-interactions button{
+        margin: 0 10px;
+        padding: 5px 10px;
+        border-radius: 20px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+
+}
+
+
+@media only screen and (max-width: 600px) {
+    .post-container {
+      width: 80%;
+    }
+
+    .post-buttons{
+        flex-direction: column;
+    }
+
+    .edit-post{
+        margin-top: 20px;
+    }
+
+    .post-interactions button , .edit-post button {
+        margin: 0 2px;
+        padding: 5px 5px;
+        border-radius: 20px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+  
+}

@@ -1,0 +1,85 @@
+/* Assuming your base theme and variables are set up similarly to the Post component */
+.comments-container .main-content{
+    display: flex;
+    flex-direction: column;
+    /* background-color: blue; */
+    max-height: 200px;
+    overflow: auto;
+    max-width: 600px;
+}
+
+
+.comment-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: var(--light-background);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Light shadow for depth, adjust as needed */
+}
+
+.comment-author {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.comment-author img {
+    width: 30px; /* Smaller than post profile picture */
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.comment-author h3 {
+    margin: 0;
+    font-size: 14px; /* Adjust based on your design */
+    color: var(--light-text);
+}
+
+.comment-content p {
+    margin: 0;
+    padding: 0;
+    color: var(--light-text); /* Ensure readability */
+    overflow:auto;
+}
+
+
+/* Dark mode adjustments if you have a prefers-color-scheme: dark in place */
+@media (prefers-color-scheme: dark) {
+    .comment-container {
+        background-color: var(--dark-background);
+        box-shadow: 0 2px 4px rgba(255,255,255,0.1); /* Adjust for dark mode */
+    }
+
+    .comment-author h3, .comment-content p {
+        color: var(--dark-text);
+    }
+}
+
+@media (max-width: 600px) {
+    .comment-container {
+        width: 400px;
+
+    }
+
+    .main-content .comment-container{
+        width:400px;
+    }
+
+
+
+}
+
+@media (max-width: 768px) {
+    .comment-container {
+        margin-top: 8px;
+        padding: 8px;
+    }
+
+    .comment-author h3 {
+        font-size: 12px;
+    }
+}
